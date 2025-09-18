@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A-1 Affordable Plumbing Services – Hydrostatic Test Report</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 2rem;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    header img {
+      max-width: 180px;
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      color: #0077cc;
+      margin-bottom: 0.3rem;
+    }
+    header p {
+      font-size: 1rem;
+      color: #555;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .section {
+      margin-bottom: 2rem;
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+    .exclusions {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 1rem;
+    }
+    button {
+      padding: 0.7rem 1.5rem;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="A-1APSVC Logo.png" alt="A-1APSVC Logo" />
+    <h1>A-1 Affordable Plumbing Services</h1>
+    <p>Hydrostatic Pressure Test Report</p>
+  </header>
+
+  <form>
+    <div class="section">
+      <label>Customer Name</label>
+      <input type="text" name="customerName" required />
+
+      <label>Service Address</label>
+      <input type="text" name="address" required />
+
+      <label>Date of Test</label>
+      <input type="date" name="testDate" required />
+
+      <label>Technician Name</label>
+      <input type="text" name="technicianName" required />
+    </div>
+
+    <div class="section">
+      <label>Test Location</label>
+      <input type="text" name="testLocation" />
+
+      <label>Test Duration (minutes)</label>
+      <input type="number" name="duration" min="0" />
+
+      <label>Outcome</label>
+      <select name="outcome">
+        <option value="pass">Pass</option>
+        <option value="fail">Fail</option>
+      </select>
+
+      <label>Observed Anomalies</label>
+      <textarea name="anomalies" rows="4"></textarea>
+
+      <label>Technician Notes</label>
+      <textarea name="notes" rows="4"></textarea>
+
+      <label>Upload Photos/Videos</label>
+      <input type="file" name="media" accept="image/*,video/*" multiple />
+    </div>
+
+    <div class="section exclusions">
+      <strong>Exclusions:</strong>
+      <ul>
+        <li>No leak location or repair included—separate estimate required if system fails.</li>
+        <li>No removal/replacement of flooring, concrete, or drywall.</li>
+        <li>Permits not included unless specified.</li>
+        <li>Access must be provided to cleanouts or crawlspaces before testing.</li>
+      </ul>
+    </div>
+
+    <button type="submit">Submit Report</button>
+  </form>
+
+</body>
+</html>
