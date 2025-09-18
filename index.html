@@ -2,54 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>A-1 Affordable Plumbing Services – Hydrostatic Test Report</title>
   <style>
-    <script>
-document.querySelector("form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const formData = new FormData(e.target);
-  const payload = {
-    customer_name: formData.get("customerName"),
-    address: formData.get("address"),
-    test_date: formData.get("testDate"),
-    technician_name: formData.get("technicianName"),
-    test_location: formData.get("testLocation"),
-    duration_minutes: parseInt(formData.get("duration")) || null,
-    outcome: formData.get("outcome"),
-    anomalies: formData.get("anomalies"),
-    notes: formData.get("notes"),
-    user_id: "ba79e7ec-6989-42c5-a8d6-723391071e6a" // Johnnie's UUID
-  };
-
-  try {
-    const res = await fetch("https://zzigzylypifjokskehkn.supabase.co/rest/v1/hydrostatic_tests", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIyODEzNDAsImV4cCI6MjA2Nzg1NzM0MH0.UjSODSs-tWPmXxKkyuaSIvSutx5dCnJsMhzslbFaBUg",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIyODEzNDAsImV4cCI6MjA2Nzg1NzM0MH0.UjSODSs-tWPmXxKkyuaSIvSutx5dCnJsMhzslbFaBUg"
-      },
-      body: JSON.stringify(payload)
-    });
-
-    const result = await res.json();
-    console.log("Supabase response:", result);
-
-    if (res.ok) {
-      alert("Report submitted successfully!");
-      e.target.reset();
-    } else {
-      alert("Submission failed. See console for details.");
-    }
-  } catch (error) {
-    console.error("Submission error:", error);
-    alert("Something went wrong. Please try again.");
-  }
-});
-</script>
-
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 2rem;
@@ -89,7 +44,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       background-color: #fff;
       padding: 1rem;
       border-radius: 6px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
     }
     .exclusions {
       font-size: 0.9rem;
@@ -117,7 +72,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     <p>Hydrostatic Pressure Test Report</p>
   </header>
 
-  <form>
+  <form id="hydroForm">
     <div class="section">
       <label>Customer Name</label>
       <input type="text" name="customerName" required />
@@ -167,6 +122,51 @@ document.querySelector("form").addEventListener("submit", async (e) => {
 
     <button type="submit">Submit Report</button>
   </form>
+
+  <script>
+    document.getElementById("hydroForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const payload = {
+        customer_name: formData.get("customerName"),
+        address: formData.get("address"),
+        test_date: formData.get("testDate"),
+        technician_name: formData.get("technicianName"),
+        test_location: formData.get("testLocation"),
+        duration_minutes: parseInt(formData.get("duration")) || null,
+        outcome: formData.get("outcome"),
+        anomalies: formData.get("anomalies"),
+        notes: formData.get("notes"),
+        user_id: "ba79e7ec-6989-42c5-a8d6-723391071e6a"
+      };
+
+      try {
+        const res = await fetch("https://zzigzylypifjokskehkn.supabase.co/rest/v1/hydrostatic_tests", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIyODEzNDAsImV4cCI6MjA2Nzg1NzM0MH0.UjSODSs-tWPmXxKkyuaSIvSutx5dCnJsMhzslbFaBUg",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIyODEzNDAsImV4cCI6MjA2Nzg1NzM0MH0.UjSODSs-tWPmXxKkyuaSIvSutx5dCnJsMhzslbFaBUg"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        console.log("Supabase response:", result);
+
+        if (res.ok) {
+          alert("Report submitted successfully!");
+          e.target.reset();
+        } else {
+          alert("Submission failed. See console for details.");
+        }
+      } catch (error) {
+        console.error("Submission error:", error);
+        alert("Something went wrong. Please try again.");
+      }
+    });
+  </script>
 
 </body>
 </html>
