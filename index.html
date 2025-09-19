@@ -128,7 +128,29 @@
         } else {
           alert('Test report submitted successfully!');
           form.reset();
+
+          // Build printable report
+          const reportHTML = `
+            <h2>Submitted Report</h2>
+            <p><strong>Customer:</strong> ${form.customerName.value}</p>
+            <p><strong>Address:</strong> ${form.address.value}</p>
+            <p><strong>Date:</strong> ${form.testDate.value}</p>
+            <p><strong>Technician:</strong> ${form.technicianName.value}</p>
+            <p><strong>Location:</strong> ${form.testLocation.value}</p>
+            <p><strong>Duration:</strong> ${form.duration.value} minutes</p>
+            <p><strong>Outcome:</strong> ${form.outcome.value}</p>
+            <p><strong>Anomalies:</strong> ${form.anomalies.value}</p>
+            <p><strong>Notes:</strong> ${form.notes.value}</p>
+          `;
+          document.getElementById('printable-report').innerHTML = reportHTML;
+          document.getElementById('printable-report').style.display = 'block';
+          document.getElementById('print-btn').style.display = 'inline-block';
         }
+      });
+
+      // 🔧 Add Print Button Logic
+      document.getElementById('print-btn').addEventListener('click', () => {
+        window.print();
       });
     });
   </script>
