@@ -1,68 +1,132 @@
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const supabase = window.supabase.createClient(
-      'https://zzigzylypifjokskehkn.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ5Njg4NzcsImV4cCI6MjAwMDU0NDg3N30.1zZKXgZ4gkUuYQ7gqvZgkXz8aZJvZzZzZzZzZzZzZzZ'
-    );
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A-1 Affordable Plumbing Services – Hydrostatic Test Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 2rem; background-color: #f9f9f9; color: #333; }
+    header { text-align: center; margin-bottom: 2rem; }
+    label { display: block; margin-top: 1rem; font-weight: bold; }
+    input, textarea, select { width: 100%; padding: 0.5rem; margin-top: 0.3rem; border: 1px solid #ccc; border-radius: 4px; }
+    .section { margin-bottom: 2rem; background-color: #fff; padding: 1rem; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); }
+    button { padding: 0.7rem 1.5rem; background-color: #0077cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #005fa3; }
+    #test-form, #logout-btn { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hydrostatic Test Report</h1>
+    <p>Secure submission for A-1 Affordable Plumbing Services</p>
+  </header>
 
-    async function checkAuth() {
-      const { data: { user } } = await supabase.auth.getUser();
-      document.getElementById('test-form').style.display = user ? 'block' : 'none';
-      document.getElementById('logout-btn').style.display = user ? 'inline-block' : 'none';
-      document.getElementById('login-form').style.display = user ? 'none' : 'block';
-    }
+  <!-- Login Form -->
+  <form id="login-form">
+    <label>Email</label>
+    <input type="email" id="email" required />
+    <label>Password</label>
+    <input type="password" id="password" required />
+    <button type="submit">Sign In</button>
+  </form>
 
-    checkAuth();
+  <!-- Logout Button -->
+  <button id="logout-btn">Sign Out</button>
 
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) {
-        alert('Login failed: ' + error.message);
-      } else {
-        alert('Signed in successfully');
-        checkAuth();
+  <!-- Hydrostatic Test Form -->
+  <form id="test-form" class="section">
+    <label>Customer Name</label>
+    <input type="text" name="customerName" required />
+    <label>Address</label>
+    <input type="text" name="address" required />
+    <label>Test Date</label>
+    <input type="date" name="testDate" required />
+    <label>Technician Name</label>
+    <input type="text" name="technicianName" required />
+    <label>Test Location</label>
+    <input type="text" name="testLocation" required />
+    <label>Duration (minutes)</label>
+    <input type="number" name="duration" required />
+    <label>Outcome</label>
+    <select name="outcome">
+      <option value="pass">Pass</option>
+      <option value="fail">Fail</option>
+    </select>
+    <label>Anomalies</label>
+    <input type="text" name="anomalies" />
+    <label>Notes</label>
+    <textarea name="notes"></textarea>
+    <button type="submit">Submit Report</button>
+  </form>
+
+  <!-- Supabase Auth & Submission Logic -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const supabase = createClient(
+        'https://zzigzylypifjokskehkn.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ5Njg4NzcsImV4cCI6MjAwMDU0NDg3N30.1zZKXgZ4gkUuYQ7gqvZgkXz8aZJvZzZzZzZzZzZzZzZ'
+      );
+
+      async function checkAuth() {
+        const { data: { user } } = await supabase.auth.getUser();
+        document.getElementById('test-form').style.display = user ? 'block' : 'none';
+        document.getElementById('logout-btn').style.display = user ? 'inline-block' : 'none';
+        document.getElementById('login-form').style.display = user ? 'none' : 'block';
       }
-    });
 
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-      await supabase.auth.signOut();
       checkAuth();
+
+      document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+          alert('Login failed: ' + error.message);
+        } else {
+          alert('Signed in successfully');
+          checkAuth();
+        }
+      });
+
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        checkAuth();
+      });
+
+      document.getElementById('test-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError || !user) {
+          alert('You must be signed in to submit.');
+          return;
+        }
+
+        const form = e.target;
+        const { error } = await supabase
+          .from('hydrostatic_tests')
+          .insert([{
+            user_id: user.id,
+            customer_name: form.customerName.value,
+            address: form.address.value,
+            test_date: form.testDate.value,
+            technician_name: form.technicianName.value,
+            test_location: form.testLocation.value,
+            duration_minutes: parseInt(form.duration.value),
+            outcome: form.outcome.value,
+            anomalies: form.anomalies.value,
+            notes: form.notes.value
+          }]);
+
+        if (error) {
+          alert('Submission failed: ' + error.message);
+        } else {
+          alert('Test report submitted successfully!');
+          form.reset();
+        }
+      });
     });
-
-    document.getElementById('test-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      if (authError || !user) {
-        alert('You must be signed in to submit.');
-        return;
-      }
-
-      const form = e.target;
-      const { error } = await supabase
-        .from('hydrostatic_tests')
-        .insert([{
-          user_id: user.id,
-          customer_name: form.customerName.value,
-          address: form.address.value,
-          test_date: form.testDate.value,
-          technician_name: form.technicianName.value,
-          test_location: form.testLocation.value,
-          duration_minutes: parseInt(form.duration.value),
-          outcome: form.outcome.value,
-          anomalies: form.anomalies.value,
-          notes: form.notes.value
-        }]);
-
-      if (error) {
-        alert('Submission failed: ' + error.message);
-      } else {
-        alert('Test report submitted successfully!');
-        form.reset();
-      }
-    });
-  });
-</script>
-
+  </script>
+</body>
+</html>
