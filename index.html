@@ -63,13 +63,13 @@
   <!-- Supabase Auth & Submission Logic -->
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      const supabase = supabase.createClient(
+      const client = window.supabase.createClient(
         'https://zzigzylypifjokskehkn.supabase.co',
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ5Njg4NzcsImV4cCI6MjAwMDU0NDg3N30.1zZKXgZ4gkUuYQ7gqvZgkXz8aZJvZzZzZzZzZzZzZzZ'
       );
 
       async function checkAuth() {
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { user } } = await client.auth.getUser();
         document.getElementById('test-form').style.display = user ? 'block' : 'none';
         document.getElementById('logout-btn').style.display = user ? 'inline-block' : 'none';
         document.getElementById('login-form').style.display = user ? 'none' : 'block';
@@ -81,7 +81,7 @@
         e.preventDefault();
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await client.auth.signInWithPassword({ email, password });
         if (error) {
           alert('Login failed: ' + error.message);
         } else {
@@ -91,20 +91,20 @@
       });
 
       document.getElementById('logout-btn').addEventListener('click', async () => {
-        await supabase.auth.signOut();
+        await client.auth.signOut();
         checkAuth();
       });
 
       document.getElementById('test-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        const { data: { user }, error: authError } = await client.auth.getUser();
         if (authError || !user) {
           alert('You must be signed in to submit.');
           return;
         }
 
         const form = e.target;
-        const { error } = await supabase
+        const { error } = await client
           .from('hydrostatic_tests')
           .insert([{
             user_id: user.id,
