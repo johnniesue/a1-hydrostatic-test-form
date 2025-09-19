@@ -60,12 +60,16 @@
     <button type="submit">Submit Report</button>
   </form>
 
+  <!-- 🔧 Print Section Below Form -->
+  <div id="printable-report" class="section" style="display:none;"></div>
+  <button id="print-btn" style="display:none;">Print Report</button>
+
   <!-- Supabase Auth & Submission Logic -->
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       const client = window.supabase.createClient(
         'https://zzigzylypifjokskehkn.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIyODEzNDAsImV4cCI6MjA2Nzg1NzM0MH0.UjSODSs-tWPmXxKkyuaSIvSutx5dCnJsMhzslbFaBUg'
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIyODEzNDAsImV4cCI6MjA2Nzg1NzM0MH0.UjSODSs-tWPmXxKkyuaSIvSutx[...]'
       );
 
       async function checkAuth() {
