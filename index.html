@@ -22,15 +22,6 @@
     <p>Secure submission for A-1 Affordable Plumbing Services</p>
   </header>
 
-  <!-- Login Form -->
-  <form id="login-form">
-    <label>Email</label>
-    <input type="email" id="email" required />
-    <label>Password</label>
-    <input type="password" id="password" required />
-    <button type="submit">Sign In</button>
-  </form>
-
   <!-- Logout Button -->
   <button id="logout-btn">Sign Out</button>
 
@@ -62,48 +53,44 @@
 
   <!-- Supabase Auth & Submission Logic -->
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       const client = window.supabase.createClient(
         'https://zzigzylypifjokskehkn.supabase.co',
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ5Njg4NzcsImV4cCI6MjAwMDU0NDg3N30.1zZKXgZ4gkUuYQ7gqvZgkXz8aZJvZzZzZzZzZzZzZzZ'
       );
 
-      async function checkAuth() {
-        const { data: { user } } = await client.auth.getUser();
-        document.getElementById('test-form').style.display = user ? 'block' : 'none';
-        document.getElementById('logout-btn').style.display = user ? 'inline-block' : 'none';
-        document.getElementById('login-form').style.display = user ? 'none' : 'block';
+      // Inject your session from recovery link
+      const accessToken = 'eyJhbGciOiJIUzI1NiIsImtpZCI6IitBYkFiN2dXd09QVmNiUC8iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6aWd6eWx5cGlmam9rc2tlaGtuLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJiYTc5ZTdlYy02OTg5LTQyYzUtYThkNi03MjMzOTEwNzFlNmEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4MjU2MzE2LCJpYXQiOjE3NTgyNTI3MTYsImVtYWlsIjoiam9obm5pZXN1ZUBhLTFhZmZvcmRhYmxlcGx1bWJpbmdzZXJ2aWNlcy5jb20iLCJyb2xlIjoiYXV0aGVudGljYXRlZCIsInNlc3Npb25faWQiOiI3NGNhOWViZS0yNjYxLTQzOTAtYWVkMi0yN2UzOWY2MWQwZWEiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.8pj1Yede-sBvMk-cASXMADBx7UoFrt2zEN9TlErsTuE';
+      const refreshToken = 'zytnhvjgxwa4';
+
+      const { error } = await client.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken
+      });
+
+      if (error) {
+        alert('Session injection failed: ' + error.message);
+        return;
       }
 
-      checkAuth();
+      const { data: { user } } = await client.auth.getUser();
+      if (!user) {
+        alert('No user session found.');
+        return;
+      }
 
-      document.getElementById('login-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const { error } = await client.auth.signInWithPassword({ email, password });
-        if (error) {
-          alert('Login failed: ' + error.message);
-        } else {
-          alert('Signed in successfully');
-          checkAuth();
-        }
-      });
+      document.getElementById('test-form').style.display = 'block';
+      document.getElementById('logout-btn').style.display = 'inline-block';
 
       document.getElementById('logout-btn').addEventListener('click', async () => {
         await client.auth.signOut();
-        checkAuth();
+        location.reload();
       });
 
       document.getElementById('test-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const { data: { user }, error: authError } = await client.auth.getUser();
-        if (authError || !user) {
-          alert('You must be signed in to submit.');
-          return;
-        }
-
         const form = e.target;
+
         const { error } = await client
           .from('hydrostatic_tests')
           .insert([{
