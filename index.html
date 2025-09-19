@@ -13,7 +13,7 @@
     .section { margin-bottom: 2rem; background-color: #fff; padding: 1rem; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); }
     button { padding: 0.7rem 1.5rem; background-color: #0077cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
     button:hover { background-color: #005fa3; }
-    #test-form, #logout-btn { display: none; }
+    #test-form, #logout-btn, #printable-report, #print-btn { display: none; }
   </style>
 </head>
 <body>
@@ -60,16 +60,16 @@
     <button type="submit">Submit Report</button>
   </form>
 
-  <!-- 🔧 Print Section Below Form -->
-  <div id="printable-report" class="section" style="display:none;"></div>
-  <button id="print-btn" style="display:none;">Print Report</button>
+  <!-- Printable Report Section -->
+  <div id="printable-report" class="section"></div>
+  <button id="print-btn">Print Report</button>
 
   <!-- Supabase Auth & Submission Logic -->
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       const client = window.supabase.createClient(
         'https://zzigzylypifjokskehkn.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIyODEzNDAsImV4cCI6MjA2Nzg1NzM0MH0.UjSODSs-tWPmXxKkyuaSIvSutx[...]'
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIyODEzNDAsImV4cCI6MjA2Nzg1NzM0MH0.UjSODSs-tWPmXxKkyuaSIvSutx5dCnJsMhzslbFaBUg'
       );
 
       async function checkAuth() {
@@ -129,7 +129,6 @@
           alert('Test report submitted successfully!');
           form.reset();
 
-          // Build printable report
           const reportHTML = `
             <h2>Submitted Report</h2>
             <p><strong>Customer:</strong> ${form.customerName.value}</p>
@@ -148,7 +147,6 @@
         }
       });
 
-      // 🔧 Add Print Button Logic
       document.getElementById('print-btn').addEventListener('click', () => {
         window.print();
       });
