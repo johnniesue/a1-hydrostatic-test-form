@@ -550,64 +550,79 @@
     </div>
 
     <script>
-        // Auto-calculate pressure loss
-        function calculatePressureLoss() {
-            const beginning = parseFloat(document.getElementById('beginningPressure').value) || 0;
-            const ending = parseFloat(document.getElementById('endingPressure').value) || 0;
-            const loss = beginning - ending;
-            document.getElementById('pressureLoss').value = loss >= 0 ? loss.toFixed(1) : '';
-        }
+  // Auto-calculate pressure loss
+  function calculatePressureLoss() {
+    const beginning = parseFloat(document.getElementById('beginningPressure').value) || 0;
+    const ending = parseFloat(document.getElementById('endingPressure').value) || 0;
+    const loss = beginning - ending;
+    document.getElementById('pressureLoss').value = loss >= 0 ? loss.toFixed(1) : '';
+  }
+  document.getElementById('beginningPressure').addEventListener('input', calculatePressureLoss);
+  document.getElementById('endingPressure').addEventListener('input', calculatePressureLoss);
 
-        document.getElementById('beginningPressure').addEventListener('input', calculatePressureLoss);
-        document.getElementById('endingPressure').addEventListener('input', calculatePressureLoss);
+  // Set current date as default
+  document.getElementById('testDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('signatureDate').value = new Date().toISOString().split('T')[0];
 
-        // Set current date as default
-        document.getElementById('testDate').value = new Date().toISOString().split('T')[0];
-        document.getElementById('signatureDate').value = new Date().toISOString().split('T')[0];
+  // Form functions
+  function printForm() { window.print(); }
+  function clearForm() {
+    if (confirm('Are you sure you want to clear all form data?')) {
+      document.getElementById('hydrostaticTestForm').reset();
+      document.getElementById('testDate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('signatureDate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('masterPlumber').value = 'Chris Crabtree M-43801';
+      document.getElementById('licenseNumber').value = 'M-43801';
+    }
+  }
+  function saveForm() {
+    alert('PDF save functionality would be implemented here. For now, please use the Print function and save as PDF.');
+  }
 
-        // Form functions
-        function printForm() {
-            window.print();
-        }
+  // ✅ Fixed form submission
+  document.getElementById('hydrostaticTestForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-        function clearForm() {
-            if (confirm('Are you sure you want to clear all form data?')) {
-                document.getElementById('hydrostaticTestForm').reset();
-                document.getElementById('testDate').value = new Date().toISOString().split('T')[0];
-                document.getElementById('signatureDate').value = new Date().toISOString().split('T')[0];
-                document.getElementById('masterPlumber').value = 'Chris Crabtree M-43801';
-                document.getElementById('licenseNumber').value = 'M-43801';
-            }
-        }
+    const requiredFields = ['customerName', 'testDate', 'street', 'cityZip'];
+    let isValid = true;
+    requiredFields.forEach(field => {
+      const element = document.getElementById(field);
+      if (!element.value.trim()) {
+        element.style.borderColor = '#e74c3c';
+        isValid = false;
+      } else {
+        element.style.borderColor = '#ddd';
+      }
+    });
 
-        function saveForm() {
-            alert('PDF save functionality would be implemented here. For now, please use the Print function and save as PDF.');
-        }
+    if (!isValid) {
+      alert('Please fill in all required fields.');
+      return;
+    }
 
-        // Form validation
-        document.getElementById('hydrostaticTestForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const requiredFields = ['customerName', 'testDate', 'street', 'cityZip'];
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                const element = document.getElementById(field);
-                if (!element.value.trim()) {
-                    element.style.borderColor = '#e74c3c';
-                    isValid = false;
-                } else {
-                    element.style.borderColor = '#ddd';
-                }
-            });
-            
-            if (!isValid) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-            
-            alert('Form submitted successfully!');
-        });
-    </script>
+    // Gather form data
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await fetch('/api/sendMail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        alert('Form submitted successfully!');
+        this.reset();
+      } else {
+        const msg = await res.text();
+        alert('Error sending form: ' + msg);
+      }
+    } catch (err) {
+      alert('Network error: ' + err.message);
+    }
+  });
+</script>
+
 </body>
 </html>
