@@ -199,30 +199,60 @@
         }
 
         .btn-container {
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
             margin-top: 30px;
         }
 
         .btn {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
             color: white;
-            padding: 15px 40px;
+            padding: 15px 25px;
             border: none;
             border-radius: 25px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin: 0 10px;
+            min-width: 130px;
+            flex: 0 0 auto;
         }
 
         .btn:hover {
             transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        }
+
+        .btn-submit:hover {
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-print {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+
+        .btn-print:hover {
             box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
         }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        .btn-clear {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        }
+
+        .btn-clear:hover {
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+        }
+
+        .btn-save:hover {
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
         }
 
         @media (max-width: 768px) {
@@ -510,9 +540,10 @@
 
                 <!-- Action Buttons -->
                 <div class="btn-container">
-                    <button type="button" class="btn" onclick="printForm()">Print Form</button>
-                    <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
-                    <button type="button" class="btn" onclick="saveForm()">Save as PDF</button>
+                    <button type="submit" class="btn btn-submit">Submit Form</button>
+                    <button type="button" class="btn btn-print" onclick="printForm()">Print Form</button>
+                    <button type="button" class="btn btn-clear" onclick="clearForm()">Clear Form</button>
+                    <button type="button" class="btn btn-save" onclick="saveForm()">Save as PDF</button>
                 </div>
             </form>
         </div>
