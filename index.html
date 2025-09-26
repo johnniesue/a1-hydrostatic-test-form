@@ -1,156 +1,589 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A-1 Affordable Plumbing Services – Hydrostatic Test Report</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <style>
-    body { font-family: 'Segoe UI', sans-serif; margin: 2rem; background-color: #f9f9f9; color: #333; }
-    header { text-align: center; margin-bottom: 2rem; }
-    label { display: block; margin-top: 1rem; font-weight: bold; }
-    input, textarea, select { width: 100%; padding: 0.5rem; margin-top: 0.3rem; border: 1px solid #ccc; border-radius: 4px; }
-    .section { margin-bottom: 2rem; background-color: #fff; padding: 1rem; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); }
-    button { padding: 0.7rem 1.5rem; background-color: #0077cc; color: white; border: none; border-radius: 4px; cursor: pointer; }
-    button:hover { background-color: #005fa3; }
-    #test-form, #logout-btn, #printable-report, #print-btn { display: none; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrostatic Test Form - A-1 Affordable Plumbing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .header .phone {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .header .contact-info {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .form-content {
+            padding: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            background: #fafbfc;
+            transition: all 0.3s ease;
+        }
+
+        .form-section:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-group.half {
+            flex: 0.5;
+            min-width: 150px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], input[type="date"], input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="checkbox"], input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #667eea;
+        }
+
+        .checkbox-item label {
+            margin-bottom: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .test-performed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .plumbing-type-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .plumbing-category h4 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .results-section {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .signature-section {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .signature-line {
+            border-bottom: 2px solid #333;
+            width: 300px;
+            margin: 20px auto;
+            height: 40px;
+            position: relative;
+        }
+
+        .date-signature {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        @media (max-width: 768px) {
+            .form-content {
+                padding: 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .plumbing-type-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-section {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Hydrostatic Test Report</h1>
-    <p>Secure submission for A-1 Affordable Plumbing Services</p>
-  </header>
+    <div class="form-container">
+        <div class="header">
+            <h1>A-1 Affordable Plumbing</h1>
+            <div class="phone">409-491-9671</div>
+            <div class="contact-info">
+                Chris Crabtree M-45801<br>
+                1816 E Commando Pkwy # 346, Carrollton TX 75007
+            </div>
+        </div>
 
-  <!-- Login Form -->
-  <form id="login-form">
-    <label>Email</label>
-    <input type="email" id="email" required />
-    <label>Password</label>
-    <input type="password" id="password" required />
-    <button type="submit">Sign In</button>
-  </form>
+        <div class="form-content">
+            <form id="hydrostaticTestForm">
+                <!-- Basic Information Section -->
+                <div class="form-section">
+                    <div class="section-title">Basic Information</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customerName">Name:</label>
+                            <input type="text" id="customerName" name="customerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="testDate">Test Date:</label>
+                            <input type="date" id="testDate" name="testDate" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="street">Street:</label>
+                            <input type="text" id="street" name="street" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cityZip">City/Zip:</label>
+                            <input type="text" id="cityZip" name="cityZip" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label for="preTest">Pre-Test:</label>
+                            <input type="text" id="preTest" name="preTest">
+                        </div>
+                        <div class="form-group half">
+                            <label for="postTest">Post-Test:</label>
+                            <input type="text" id="postTest" name="postTest">
+                        </div>
+                        <div class="form-group">
+                            <label for="masterPlumber">Master Plumber:</label>
+                            <input type="text" id="masterPlumber" name="masterPlumber" value="Chris Crabtree M-45801">
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Logout Button -->
-  <button id="logout-btn">Sign Out</button>
+                <!-- Foundation Type Section -->
+                <div class="form-section">
+                    <div class="section-title">Foundation Type</div>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="radio" id="pierBeam" name="foundationType" value="pier_beam">
+                            <label for="pierBeam">PIER AND BEAM</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="radio" id="slab" name="foundationType" value="slab">
+                            <label for="slab">SLAB</label>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Hydrostatic Test Form -->
-  <form id="test-form" class="section">
-    <label>Customer Name</label>
-    <input type="text" name="customerName" required />
-    <label>Address</label>
-    <input type="text" name="address" required />
-    <label>Test Date</label>
-    <input type="date" name="testDate" required />
-    <label>Technician Name</label>
-    <input type="text" name="technicianName" required />
-    <label>Test Location</label>
-    <input type="text" name="testLocation" required />
-    <label>Duration (minutes)</label>
-    <input type="number" name="duration" required />
-    <label>Outcome</label>
-    <select name="outcome">
-      <option value="pass">Pass</option>
-      <option value="fail">Fail</option>
-    </select>
-    <label>Anomalies</label>
-    <input type="text" name="anomalies" />
-    <label>Notes</label>
-    <textarea name="notes"></textarea>
-    <button type="submit">Submit Report</button>
-  </form>
+                <!-- Test Performed Section -->
+                <div class="form-section">
+                    <div class="section-title">Test Performed</div>
+                    <div class="test-performed-grid">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="domesticWater" name="testPerformed" value="domestic_water">
+                            <label for="domesticWater">Domestic Water</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="waterLeakIsolation" name="testPerformed" value="water_leak_isolation">
+                            <label for="waterLeakIsolation">Water Leak Isolation</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="staticHeadSewer" name="testPerformed" value="static_head_sewer">
+                            <label for="staticHeadSewer">Static Head Sewer Test</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="measureVolFlow" name="testPerformed" value="measure_vol_flow">
+                            <label for="measureVolFlow">Measure Vol Flow</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="sewerLeakIsolation" name="testPerformed" value="sewer_leak_isolation">
+                            <label for="sewerLeakIsolation">Sewer Leak Isolation</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="showerPanTest" name="testPerformed" value="shower_pan_test">
+                            <label for="showerPanTest">Shower Pan Test</label>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Printable Report Section -->
-  <div id="printable-report" class="section"></div>
-  <button id="print-btn">Print Report</button>
+                <!-- Plumbing Type Section -->
+                <div class="form-section">
+                    <div class="section-title">Plumbing Type</div>
+                    <div class="plumbing-type-section">
+                        <div class="plumbing-category">
+                            <h4>Water:</h4>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="waterCopper" name="waterType" value="copper">
+                                    <label for="waterCopper">COPPER</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="waterGalvanized" name="waterType" value="galvanized">
+                                    <label for="waterGalvanized">GALVANIZED</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="waterQuest" name="waterType" value="quest">
+                                    <label for="waterQuest">QUEST</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="plumbing-category">
+                            <h4>Sewer:</h4>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="sewerPVC" name="sewerType" value="pvc">
+                                    <label for="sewerPVC">PVC</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="sewerCastIron" name="sewerType" value="cast_iron">
+                                    <label for="sewerCastIron">CAST IRON</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="sewerABS" name="sewerType" value="abs">
+                                    <label for="sewerABS">ABS</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Supabase Auth & Submission Logic -->
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      const client = window.supabase.createClient(
-        'https://zzigzylypifjokskehkn.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6aWd6eWx5cGlmam9rc2tlaGtuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIyODEzNDAsImV4cCI6MjA2Nzg1NzM0MH0.UjSODSs-tWPmXxKkyuaSIvSutx5dCnJsMhzslbFaBUg'
-      );
+                <!-- Domestic Water Test Section -->
+                <div class="form-section">
+                    <div class="section-title">Domestic Water Test</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="beginningPressure">Beginning Pressure (PSI):</label>
+                            <input type="number" id="beginningPressure" name="beginningPressure" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="endingPressure">Ending Pressure (PSI):</label>
+                            <input type="number" id="endingPressure" name="endingPressure" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="pressureLoss">Loss (PSI):</label>
+                            <input type="number" id="pressureLoss" name="pressureLoss" step="0.1" readonly>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="testLength">Length of Test:</label>
+                            <input type="text" id="testLength" name="testLength">
+                        </div>
+                        <div class="form-group">
+                            <label for="shutOffLocation">Shut Off Location:</label>
+                            <input type="text" id="shutOffLocation" name="shutOffLocation" placeholder="City Meter / Valve">
+                        </div>
+                    </div>
+                    <div class="results-section">
+                        <label>Hydrostatic Test Results:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="radio" id="waterPassed" name="waterTestResult" value="passed">
+                                <label for="waterPassed">PASSED</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" id="waterFailed" name="waterTestResult" value="failed">
+                                <label for="waterFailed">FAILED</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-      async function checkAuth() {
-        const { data: { user } } = await client.auth.getUser();
-        document.getElementById('test-form').style.display = user ? 'block' : 'none';
-        document.getElementById('logout-btn').style.display = user ? 'inline-block' : 'none';
-        document.getElementById('login-form').style.display = user ? 'none' : 'block';
-      }
+                <!-- Static Head Sewer Test Section -->
+                <div class="form-section">
+                    <div class="section-title">Static Head Sewer Test</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Clean Out Location:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cleanOutFront" name="cleanOutLocation" value="front">
+                                    <label for="cleanOutFront">Front</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cleanOutBack" name="cleanOutLocation" value="back">
+                                    <label for="cleanOutBack">Back</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cleanOutLeft" name="cleanOutLocation" value="left">
+                                    <label for="cleanOutLeft">Left</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="cleanOutRight" name="cleanOutLocation" value="right">
+                                    <label for="cleanOutRight">Right</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sewerTestLength">Length of Test:</label>
+                            <input type="text" id="sewerTestLength" name="sewerTestLength">
+                        </div>
+                        <div class="form-group">
+                            <label>Loss of Flow:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="radio" id="sysHeld" name="lossOfFlow" value="sys_held">
+                                    <label for="sysHeld">Sys Held</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="radio" id="sysFailed" name="lossOfFlow" value="sys_failed">
+                                    <label for="sysFailed">Sys Failed</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="results-section">
+                        <label>Static Head Test on Sewer System Results:</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="radio" id="sewerPassed" name="sewerTestResult" value="passed">
+                                <label for="sewerPassed">PASSED</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" id="sewerFailed" name="sewerTestResult" value="failed">
+                                <label for="sewerFailed">FAILED</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-      checkAuth();
+                <!-- Signature Section -->
+                <div class="form-section signature-section">
+                    <div class="section-title">Signature</div>
+                    <div class="signature-line"></div>
+                    <div class="date-signature">
+                        <div>
+                            <label for="signatureDate">Date:</label>
+                            <input type="date" id="signatureDate" name="signatureDate" style="width: 150px; margin-top: 5px;">
+                        </div>
+                        <div>
+                            <label for="licenseNumber">License Number:</label>
+                            <input type="text" id="licenseNumber" name="licenseNumber" value="M-45801" style="width: 150px; margin-top: 5px;">
+                        </div>
+                    </div>
+                </div>
 
-      document.getElementById('login-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const { error } = await client.auth.signInWithPassword({ email, password });
-        if (error) {
-          alert('Login failed: ' + error.message);
-        } else {
-          alert('Signed in successfully');
-          checkAuth();
+                <!-- Action Buttons -->
+                <div class="btn-container">
+                    <button type="button" class="btn" onclick="printForm()">Print Form</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear Form</button>
+                    <button type="button" class="btn" onclick="saveForm()">Save as PDF</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Auto-calculate pressure loss
+        function calculatePressureLoss() {
+            const beginning = parseFloat(document.getElementById('beginningPressure').value) || 0;
+            const ending = parseFloat(document.getElementById('endingPressure').value) || 0;
+            const loss = beginning - ending;
+            document.getElementById('pressureLoss').value = loss >= 0 ? loss.toFixed(1) : '';
         }
-      });
 
-      document.getElementById('logout-btn').addEventListener('click', async () => {
-        await client.auth.signOut();
-        checkAuth();
-      });
+        document.getElementById('beginningPressure').addEventListener('input', calculatePressureLoss);
+        document.getElementById('endingPressure').addEventListener('input', calculatePressureLoss);
 
-      document.getElementById('test-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const { data: { user }, error: authError } = await client.auth.getUser();
-        if (authError || !user) {
-          alert('You must be signed in to submit.');
-          return;
+        // Set current date as default
+        document.getElementById('testDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('signatureDate').value = new Date().toISOString().split('T')[0];
+
+        // Form functions
+        function printForm() {
+            window.print();
         }
 
-        const form = e.target;
-        const { error } = await client
-          .from('hydrostatic_tests')
-          .insert([{
-            user_id: user.id,
-            customer_name: form.customerName.value,
-            address: form.address.value,
-            test_date: form.testDate.value,
-            technician_name: form.technicianName.value,
-            test_location: form.testLocation.value,
-            duration_minutes: parseInt(form.duration.value),
-            outcome: form.outcome.value,
-            anomalies: form.anomalies.value,
-            notes: form.notes.value
-          }]);
-
-        if (error) {
-          alert('Submission failed: ' + error.message);
-        } else {
-          alert('Test report submitted successfully!');
-          form.reset();
-
-          const reportHTML = `
-            <h2>Submitted Report</h2>
-            <p><strong>Customer:</strong> ${form.customerName.value}</p>
-            <p><strong>Address:</strong> ${form.address.value}</p>
-            <p><strong>Date:</strong> ${form.testDate.value}</p>
-            <p><strong>Technician:</strong> ${form.technicianName.value}</p>
-            <p><strong>Location:</strong> ${form.testLocation.value}</p>
-            <p><strong>Duration:</strong> ${form.duration.value} minutes</p>
-            <p><strong>Outcome:</strong> ${form.outcome.value}</p>
-            <p><strong>Anomalies:</strong> ${form.anomalies.value}</p>
-            <p><strong>Notes:</strong> ${form.notes.value}</p>
-          `;
-          document.getElementById('printable-report').innerHTML = reportHTML;
-          document.getElementById('printable-report').style.display = 'block';
-          document.getElementById('print-btn').style.display = 'inline-block';
+        function clearForm() {
+            if (confirm('Are you sure you want to clear all form data?')) {
+                document.getElementById('hydrostaticTestForm').reset();
+                document.getElementById('testDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('signatureDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('masterPlumber').value = 'Chris Crabtree M-45801';
+                document.getElementById('licenseNumber').value = 'M-43801';
+            }
         }
-      });
 
-      document.getElementById('print-btn').addEventListener('click', () => {
-        window.print();
-      });
-    });
-  </script>
+        function saveForm() {
+            // This would typically integrate with a PDF generation library
+            alert('PDF save functionality would be implemented here. For now, please use the Print function and save as PDF.');
+        }
+
+        // Form validation and enhancement
+        document.getElementById('hydrostaticTestForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic validation
+            const requiredFields = ['customerName', 'testDate', 'street', 'cityZip'];
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    element.style.borderColor = '#e74c3c';
+                    isValid = false;
+                } else {
+                    element.style.borderColor = '#ddd';
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            alert('Form submitted successfully!');
+        });
+
+        // Add smooth animations
+        document.querySelectorAll('.form-section').forEach(section => {
+            section.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            section.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
 </body>
 </html>
