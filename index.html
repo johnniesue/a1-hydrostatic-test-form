@@ -100,7 +100,7 @@
     .btn-submit { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
     .btn-print { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
     .btn-clear { background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); }
-    .btn-save { background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%); }
+    .btn-share { background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%); }
 
     @media print {
       body {
@@ -213,7 +213,7 @@
           <button type="submit" class="btn btn-submit">Submit Form</button>
           <button type="button" class="btn btn-print" onclick="printForm()">Print Form</button>
           <button type="button" class="btn btn-clear" onclick="clearForm()">Clear Form</button>
-          <button type="button" class="btn btn-save" onclick="saveForm()">Save as PDF</button>
+          <button type="button" class="btn btn-share" onclick="shareForm()">Share</button>
         </div>
       </form>
     </div>
@@ -221,31 +221,4 @@
 
   <script>
     function calculatePressureLoss() {
-      const beginning = parseFloat(document.getElementById('beginningPressure').value) || 0;
-      const ending = parseFloat(document.getElementById('endingPressure').value) || 0;
-      const loss = beginning - ending;
-      document.getElementById('pressureLoss').value = loss >= 0 ? loss.toFixed(1) : '';
-    }
-
-    function printForm() {
-      window.print();
-    }
-
-    function clearForm() {
-      if (confirm("Are you sure you want to clear the form?")) {
-        document.getElementById('hydrostaticTestForm').reset();
-        document.getElementById('pressureLoss').value = '';
-      }
-    }
-
-    function saveForm() {
-      window.print(); // fallback for PDF
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('beginningPressure').addEventListener('input', calculatePressureLoss);
-      document.getElementById('endingPressure').addEventListener('input', calculatePressureLoss);
-    });
-  </script>
-</body>
-</html>
+      const beginning =
