@@ -1,0 +1,16 @@
+Folder PATH listing for volume Windows-SSD
+Volume serial number is A076-2804
+C:.
+¦   .gitignore
+¦   A-1APSVC LOGO.png
+¦   folder-structure.txt
+¦   index.html
+¦   README.md
+¦   
++---.vercel
+¦       project.json
+¦       README.txt
+¦       
++---api
+        sendMail.js
+        
