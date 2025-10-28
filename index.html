@@ -867,21 +867,42 @@
       return result;
     }
 
-    // Close modal when clicking outside
-    window.onclick = function (event) {
-      const modal = document.getElementById('shareModal');
-      if (event.target === modal) { closeShareModal(); }
-    }
+ // Close modal when clicking outside
+window.onclick = function (event) {
+  const modal = document.getElementById('shareModal');
+  if (event.target === modal) { closeShareModal(); }
+}
 
-    // Initialize form
-    window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('beginningPressure').addEventListener('input', calculatePressureLoss);
-      document.getElementById('endingPressure').addEventListener('input', calculatePressureLoss);
-      const today = new Date().toISOString().split('T')[0];
-      document.getElementById('testDate').value = today;
-      document.getElementById('signatureDate').value = today;
-    });
-  </script>
+// Initialize form and Supabase logic
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('beginningPressure').addEventListener('input', calculatePressureLoss);
+  document.getElementById('endingPressure').addEventListener('input', calculatePressureLoss);
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('testDate').value = today;
+  document.getElementById('signatureDate').value = today;
+
+  // --- SUPABASE LOGIC ---
+  const supabase = supabase.createClient(
+    'https://zzigzylypifjokskehkn.supabase.co',
+    '30802d9a773269bd83f7c94814be73d3c5abc4bc22935da66e362a943447fc2e'
+  );
+
+  document.getElementById('submitBtn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const payload = {
+      customer_name: document.getElementById('customerName').value,
+      test_date: document.getElementById('testDate').value,
+      technician_name: document.getElementById('technicianName').value,
+      test_location: document.getElementById('street').value + ', ' + document.getElementById('cityZip').value,
+      duration_minutes: null, // Add field if you want to save it!
+      // Add more mappings if you want to save more fields!
+    };
+    const { error } = await supabase.from('hydrostatic_tests').insert([payload]);
+    if (error) alert('Error: ' + error.message);
+    else alert('Submitted!');
+  });
+});
+</script>
 </body>
 
 </html>
