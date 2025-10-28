@@ -649,7 +649,6 @@
           test_date: document.getElementById('testDate').value,
           technician_name: document.getElementById('technicianName').value,
           test_location: document.getElementById('street').value + ', ' + document.getElementById('cityZip').value,
-          license_number: document.getElementById('licenseNumber').value,
           // Add additional fields here if you want to send them to Supabase!
         };
         const { error } = await supabase.from('hydrostatic_tests').insert([payload]);
